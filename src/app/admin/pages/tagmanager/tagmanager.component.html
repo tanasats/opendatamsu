@@ -1,0 +1,84 @@
+<div class="my-3">
+    <h3>จัดการ RFID สำรอง</h3>
+</div>
+
+
+<div class="row">
+    <div class="col-lg">
+
+        <form [formGroup]="form1">
+            <!--  (ngSubmit)="onSubmit()"> -->
+            <div class="form-group mb-3">
+                <label class="form-label">รหัส RFID สำรอง *</label>
+                <input formControlName="spareid" type="number" class="form-control" (change)="getSpareTagByid($event)">
+                <div *ngIf="f1['spareid'].touched && f1['spareid'].invalid" class="form-error">
+                    <div *ngIf="f1['spareid'].errors && f1['spareid'].errors['required']">กรุณากรอกข้อมูล</div>
+                    <div *ngIf="f1['spareid'].errors && f1['spareid'].errors['pattern']">ตัวเลขเท่านั้น</div>
+                </div>
+            </div>
+            <input formControlName="rfid" type="text" class="form-control" readonly hidden>
+            <div class="form-group mb-3" *ngIf="spareinfo">
+                <div class="alert alert-success" role="alert" *ngIf="!spareinfo.old_rfid">
+                    RFID : {{spareinfo.rfid}} ว่าง
+                  </div>
+                  <div class="alert alert-danger" role="alert" *ngIf="spareinfo.old_rfid">
+                    ออกให้บัณฑิตลำดับที่  {{spareinfo.orderid}}  *หมายเหตุ : {{spareinfo.comments}}
+                  </div>                
+            </div>
+            <div class="form-group mb-3">
+                <label class="form-label">ลำดับบัณฑิต *</label>
+                <input formControlName="orderid" type="number" class="form-control"  (change)="getStudentByOrderid($event)">
+                <div *ngIf="f1['orderid'].touched && f1['orderid'].invalid" class="form-error">
+                    <div *ngIf="f1['orderid'].errors && f1['orderid'].errors['required']">กรุณากรอกข้อมูล</div>
+                    <div *ngIf="f1['orderid'].errors && f1['orderid'].errors['pattern']">ตัวเลขเท่านั้น</div>
+                </div>
+            </div>
+            <div class="form-group mb-3" *ngIf="studentinfo">
+                <!-- {{studentinfo |json}} -->
+                <table class="w-100">
+                    <tr>
+                        <td>รหัสนิสิต</td>
+                        <td>{{studentinfo.studentcode}}</td>
+                    </tr>
+                    <tr>
+                        <td>ชื่อ-สกุล</td>
+                        <td>{{studentinfo.prename}}{{studentinfo.name}}&nbsp;{{studentinfo.surname}}</td>
+                    </tr>
+                    <tr>
+                        <td>คณะ</td>
+                        <td>{{studentinfo.facultyname}}</td>
+                    </tr>
+                    <tr>
+                        <td>RFID</td>
+                        <td>{{studentinfo.rfid}}</td>
+                    </tr>
+                </table>
+                
+            </div>
+            <input formControlName="old_rfid" type="text" class="form-control" readonly hidden>
+            <div class="form-group mb-3">
+                <label class="form-label">หมายเหตุ *</label>
+                <input formControlName="comments" type="text" class="form-control">
+            </div>
+            <div *ngIf="form1.valid" class="form-group mb-3">
+                <div class="alert alert-warning" role="alert">
+                   เปลี่ยน rfid สำรอง {{form1.value.spareid}} ให้บัณฑิต ลำดับที่ {{form1.value.orderid}} เนื่องจาก {{form1.value.comments}}
+                </div>
+            </div>
+            <div class="my-2">
+                <button class="btn btn-primary me-2 px-5" [disabled]="!form1.valid||nowsubmit" (click)="onSubmit()">ยืนยัน</button>
+                <button class="btn btn-secondary me-2 px-5" (click)="onClear()">ยกเลิก</button>                
+            </div>
+        </form>
+ 
+
+
+        <!-- {{form1.value | json}}  -->
+
+
+    </div>
+
+    <div class="col-lg">
+        
+    </div>
+</div>
