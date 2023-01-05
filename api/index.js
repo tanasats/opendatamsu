@@ -22,7 +22,10 @@ app.use(showuri);
 const ldapv1 = require('./route/ldapv1.route');
 app.use('/api/v1/ldap',ldapv1);
 
+const userRoute = require('./route/user.route');
+app.use('/api/v1/user',userRoute);
+
 const port = process.env.SERVER_PORT || 3000;
 app.listen(port, () => {
   console.log(`Listening on port ${port}...`);
-});
+}); 

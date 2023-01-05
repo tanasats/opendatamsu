@@ -42,8 +42,6 @@ export class AuthService {
       headers: this.httpHeaders_multipath,
     };
   }
-
-
   // Error handling 
   private handleError(error: any) {
     var errorMsg: string = 'Unknow error!';
@@ -72,9 +70,15 @@ export class AuthService {
     });
   } //handleError
 
+  
 login(datas:any){
   return this.http
   .post(this.endpoint + '/login', datas)
+  .pipe(catchError(this.handleError));
+}
+me(){
+  return this.http
+  .get(this.endpoint+"/me",this.httpOptions)
   .pipe(catchError(this.handleError));
 }
 

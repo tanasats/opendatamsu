@@ -1,3 +1,4 @@
+import { CurrentUserService } from './../../../core/service/current-user.service';
 import { AuthService } from './../../../core/service/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -16,7 +17,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private formBuilder:FormBuilder,
     private auth: AuthService,
-    private router: Router
+    private router: Router,
+    private currentUserService:CurrentUserService,
   ) { 
     this.form = this.formBuilder.group({ 
       username:[null,[Validators.required]],
@@ -31,12 +33,14 @@ export class LoginComponent implements OnInit {
     console.log(this.form.value);
     let datas = this.form.getRawValue();
     this.auth.login(datas).subscribe({
-      next: (res)=>{
+      next: (res:any)=>{
         console.log(res);
-        Swal.fire('สำเร็จ', 'ยินดีต้อนรับ', 'success');
+        Swal.fire('สำเร็จ', 'ยินดีต้อนรับ '+res.username, 'success');
         this.router.navigate(['/admin/dashboard']);
+        this.currentUserService.user_name=res.username;
+        this.currentUserService.islogin=true;
       },
-      error: (err)=>{
+      error: (err:any)=>{
         console.log(err);
         Swal.fire('ผิดพลาด', 'Invalid Username/Password', 'error');
       }
